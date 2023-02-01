@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios'
-import Select from 'react-select';
+import { Link } from "react-router-dom";
+
 
 
 const Turnos = ( ) => {
@@ -44,6 +45,12 @@ const Turnos = ( ) => {
             <Button onClick={cancelarTurno} className="my-1" style={{width:'40%', marginLeft:'30%'}}>
                 Cancelar turno
             </Button>
+            <br />
+            <Link to='/ingresar'>
+                <Button className="my-1" style={{width:'40%', marginLeft:'30%'}}>
+                    Administrador
+                </Button>
+            </Link>
             {/*Modal para sacar turno*/}
             <Modal style={{color:'white'}} show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

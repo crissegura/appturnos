@@ -4,6 +4,7 @@ import Header from './componentes/header';
 import Turnos from './componentes/turnos';
 import Admin from './componentes/admin';
 import VerTurnos from './componentes/verturnos';
+import Ingresar from './componentes/ingresar';
 
 
 function App() {
@@ -13,7 +14,8 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Turnos />} />
-        <Route path='/admin' element={<Admin />} />
+        <Route path='/ingresar' element={<Ingresar />} />
+        <Route path='/admin/:usuario' element={<Admin />} />
         <Route path='/verturnosreservadosparahoy' element={<VerTurnos />} />
       </Routes>
       </BrowserRouter>
