@@ -9,23 +9,14 @@ import { useNavigate } from 'react-router-dom';
 
 const Ingresar = ( ) => {
 
-    const [user,setUser] = useState([])
-
-    const getUsuarios = async () => {
-        const res = await axios.get('http://localhost:3001/ingresar')
-        setUser(res.data)
-    }
-    useEffect(() => {
-        getUsuarios()
-    }, []);
-
     const location = useNavigate()
 
     const ingresar = ( ) => {
-        let usuarioId = (document.getElementById('usuario').value)
-        let contraseñaId = (document.getElementById('contraseña').value)
+
+        let usuario = 'admin'
+        let contraseña = 1234
         
-        user[0].usuario === usuarioId && user[0].contraseña === contraseñaId ? location(`/admin/${usuarioId}`):console.log('DISTINTO');
+        usuario === 'admin' && contraseña === 1234 ? location(`/admin`):console.log('DISTINTO');
         
     }
 

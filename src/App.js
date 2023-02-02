@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Turnos />} />
         <Route path='/ingresar' element={<Ingresar />} />
-        <Route path='/admin/:usuario' element={<Admin />} />
+        <Route path='/admin' element={<Admin />} />
         <Route path='/verturnosreservadosparahoy' element={<VerTurnos />} />
       </Routes>
       </BrowserRouter>

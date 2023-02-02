@@ -14,7 +14,7 @@ const Turnos = ( ) => {
     const modalTurno = () => setShow(true);
     const [turnos, setTurnos] = useState([])
     const getTurnos = async () => {
-        const res = await axios.get('http://localhost:3001/verturnos')
+        const res = await axios.get('https://turnosserverr-production-fa13.up.railway.app/verturnos')
         setTurnos(res.data)
     }
     useEffect(() => {
@@ -24,7 +24,7 @@ const Turnos = ( ) => {
         e.preventDefault()
         let turno = turnos.find((t)=>t.dia===document.getElementById('dia').value&&t.hora===document.getElementById('hora').value)
         //Verificación de que este dispoible el turno y envio de ser así.
-        document.getElementById('hora').value!==''&&document.getElementById('dia').value!==''&&document.getElementById('nombre').value!==''?turno?alert('Turno no disponible.'):axios.post('http://localhost:3001/nuevoturno',{nombre : document.getElementById('nombre').value.toLowerCase(),dia : document.getElementById('dia').value,hora : document.getElementById('hora').value}).then(alert('Turno agendado!')).then(handleClose().then(getTurnos())):alert('Completá todos los campos.')
+        document.getElementById('hora').value!==''&&document.getElementById('dia').value!==''&&document.getElementById('nombre').value!==''?turno?alert('Turno no disponible.'):axios.post('https://turnosserverr-production-fa13.up.railway.app/nuevoturno',{nombre : document.getElementById('nombre').value.toLowerCase(),dia : document.getElementById('dia').value,hora : document.getElementById('hora').value}).then(alert('Turno agendado!')).then(handleClose().then(getTurnos())):alert('Completá todos los campos.')
     }
     //Cancelar un turno
     const [show2, setShow2] = useState(false);
@@ -33,7 +33,7 @@ const Turnos = ( ) => {
     const cancelar = ( e ) => {
         e.preventDefault()
         let cancelar = turnos.find((t)=>t.dia===document.getElementById('dia2').value&&t.hora===document.getElementById('hora2').value&&t.nombre.toLowerCase()===document.getElementById('nombre2').value.toLowerCase())
-        cancelar?axios.delete(`http://localhost:3001/cancelarturno/${document.getElementById('nombre2').value.toLowerCase()}`).then(alert('Turno cancelado!')).then(handleClose2().then(getTurnos)):alert('NO HABIA NINGUN TURNO')
+        cancelar?axios.delete(`https://turnosserverr-production-fa13.up.railway.app/cancelarturno/${document.getElementById('nombre2').value.toLowerCase()}`).then(alert('Turno cancelado!')).then(handleClose2().then(getTurnos)):alert('NO HABIA NINGUN TURNO')
     }
 
     return(

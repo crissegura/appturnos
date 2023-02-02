@@ -7,17 +7,17 @@ import { Link, useParams } from 'react-router-dom';
 
 const VerTurnos = ( ) => {
 
-    let {usuarioId} = useParams()
-
     const [turnos, setTurnos] = useState([])
 
     const verTurnos =async () =>{
-        const res = await axios.get('http://localhost:3001/verturnos')
+        const res = await axios.get('https://turnosserverr-production-fa13.up.railway.app/verturnos')
         setTurnos(res.data)
+        console.log(res.data)
     }
     useEffect(() => {
         verTurnos()
     }, []);
+    
 
     let hoy = new Date()
     let numero = hoy.getDate()
@@ -28,6 +28,7 @@ const VerTurnos = ( ) => {
     let año = hoy.getFullYear()
     numero<10?numero='0'+numero:numero=numero
     let fecha = (año+'-'+mes+'-'+numero).toString()
+    console.log(fecha);
 
     let turnosDelDia = []
     turnos.map((x)=>x.dia===fecha?turnosDelDia.push({nombre:x.nombre,horario:parseInt(x.hora),fecha:x.dia}):console.log(''))
@@ -46,7 +47,7 @@ const VerTurnos = ( ) => {
     
     return(
         <div>
-            <Link to={`/admin/${usuarioId}`}>
+            <Link to={`/admin`}>
             <Button variant='secondary'>Volver</Button>            
             </Link>
 
