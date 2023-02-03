@@ -3,3 +3,17 @@
     padding: 0;
     background-color: var(--bs-body-color);
 }
+
+.inicio{
+    display: flex;
+    align-items: center;
+}
+
+.btn-inicio{
+    width: 20rem;
+}
+
+option{
+    background-color: white;
+}
+

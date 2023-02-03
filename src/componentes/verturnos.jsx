@@ -27,8 +27,7 @@ const VerTurnos = ( ) => {
     let dia = semana[hoy.getDay()]
     let año = hoy.getFullYear()
     numero<10?numero='0'+numero:numero=numero
-    let fecha = (año+'-'+mes+'-'+numero).toString()
-    console.log(fecha);
+    let fecha = (numero+'-'+mes+'-'+año).toString()
 
     let turnosDelDia = []
     turnos.map((x)=>x.dia===fecha?turnosDelDia.push({nombre:x.nombre,horario:parseInt(x.hora),fecha:x.dia}):console.log(''))
