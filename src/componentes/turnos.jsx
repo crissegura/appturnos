@@ -67,7 +67,13 @@ const Turnos = ( ) => {
     }
 
     //Si ya tiene turno y quiere cancelar autorellenar
-    document.getElementById('nombre2')
+    const a = () =>{
+    let cancelar = turnos.find((turno)=>turno.nombre===document.getElementById('nombre2').value)
+    document.getElementById('dia2').value = cancelar.dia
+    document.getElementById('dia2').setAttribute('disabled', true)
+    document.getElementById('hora2').value = cancelar.hora
+    document.getElementById('hora2').setAttribute('disabled', true)
+    }
 
     return(
         <div className="inicio" style={{display:'flex',flexAlign:'center',justifyContent:'center',flexDirection:'column'}}>
@@ -125,7 +131,7 @@ const Turnos = ( ) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Label className="my-1">Nombre y apellido</Form.Label> 
-                    <Form.Control type="text" id='nombre2' />
+                    <Form.Control type="text" id='nombre2' onChange={a} />
                     <Form.Label className="my-1">Seleccioná el día</Form.Label> 
                     <Form.Select id='dia2'>
                         {opcionesDia.map((x)=>{
