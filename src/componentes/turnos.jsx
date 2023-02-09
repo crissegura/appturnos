@@ -3,40 +3,17 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios'
-import { Link } from "react-router-dom";
-
-//Fecha y días
-let calendario = new Date()
-let numero = calendario.getDate()
-let meses = ['01','02','03','04','05','06','07','08','09','10','11','12']
-let mes = meses[calendario.getMonth()]
-let semana = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']
-let dia = semana[calendario.getDay()]
-let año = calendario.getFullYear()
-numero<10?numero='0'+numero:numero=numero
-let fecha = (año+'-'+mes+'-'+numero).toString()
-let hoy = numero+'-'+mes+'-'+año
-console.log(numero);
-let dia1
-numero==='0'+1?dia1=2:dia1=calendario.getDate()+1
-let dia2 = dia1+1
-let dia3 = dia2+1
-let dia4 = dia3+1
-dia1<10?dia1='0'+dia1:dia1=dia1
-dia2<10?dia2='0'+dia2:dia2=dia2
-dia3<10?dia3='0'+dia3:dia3=dia3
-dia4<10?dia4='0'+dia4:dia4=dia4
-let opcionesDia = [
-    {label:hoy,value:hoy},
-    {label:dia1+'-'+mes+'-'+año,value:dia1+'-'+mes+'-'+año},
-    {label:dia2+'-'+mes+'-'+año,value:dia2+'-'+mes+'-'+año},
-    {label:dia3+'-'+mes+'-'+año,value:dia3+'-'+mes+'-'+año},
-    {label:dia4+'-'+mes+'-'+año,value:dia4+'-'+mes+'-'+año},
-]
-console.log(opcionesDia)
+import { useNavigate } from "react-router-dom";
 
 
 const Turnos = ( ) => {
+
+    const navigate = useNavigate()
+
+    //Modal precios
+    const [show3, setShow3] = useState(false);
+    const handleClose3 = () => setShow3(false);
+    const modalPrecios = () => setShow3(true);
    
     //Sacar un turno
     const [show, setShow] = useState(false);
@@ -50,6 +27,7 @@ const Turnos = ( ) => {
     useEffect(() => {
         getTurnos()
     }, []);
+
     const solicitar = ( e ) =>{
         e.preventDefault()
         let turno = turnos.find((t)=>t.dia===document.getElementById('dia').value&&t.hora===document.getElementById('hora').value)
@@ -68,7 +46,7 @@ const Turnos = ( ) => {
 
     //Si ya tiene turno y quiere cancelar autorellenar
     const a = () =>{
-    let cancelar = turnos.find((turno)=>turno.nombre===document.getElementById('nombre2').value)
+    let cancelar = turnos.find((turno)=>turno.nombre===document.getElementById('nombre2').value.toLowerCase())
     document.getElementById('dia2').value = cancelar.dia
     document.getElementById('dia2').setAttribute('disabled', true)
     document.getElementById('hora2').value = cancelar.hora
@@ -76,34 +54,37 @@ const Turnos = ( ) => {
     }
 
     return(
-        <div className="inicio" style={{display:'flex',flexAlign:'center',justifyContent:'center',flexDirection:'column'}}>
-            <Button variant="secondary" onClick={modalTurno} className="my-1 btn-inicio">
-                Sacar turno
+        <div className="inicio">
+            <Button  onClick={modalPrecios} className="my-1 btn-inicio btns">
+                <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
+                <span>Lista de precios</span> 
             </Button>
             <br />
-            <Button variant="secondary" onClick={cancelarTurno} className="my-1 btn-inicio">
-                Cancelar turno
+            <Button  onClick={modalTurno} className="my-1 btn-inicio btns">
+                <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
+                <span>Sacar turno</span> 
             </Button>
             <br />
-            <Link to='/ingresar'>
-                <Button variant="secondary" className="my-1 btn-inicio">
-                    Administrador
-                </Button>
-            </Link>
+            <Button  onClick={cancelarTurno} className="my-1 btn-inicio btns">
+                <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
+                <span>Cancelar turno</span> 
+            </Button>
+            <br />
+            
+            <Button onClick={()=>navigate('/ingresar')} className="my-1 btn-inicio btns">
+                <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
+                <span>Administrador</span> 
+            </Button>
+            
             {/*Modal para sacar turno*/}
-            <Modal style={{color:'white'}} show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                <Modal.Title>Sacá turno</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+            <Modal style={{marginTop:'4rem'}} show={show} onHide={handleClose}>
+                
+                <Modal.Body className="modalContent" >
+                    <Modal.Title>SOLICITAR TURNO</Modal.Title>
                     <Form.Label className="my-1">Nombre y apellido</Form.Label> 
                     <Form.Control type="text" id='nombre' />
                     <Form.Label className="my-1">Seleccioná el día</Form.Label> 
-                    <Form.Select id='dia'>
-                        {opcionesDia.map((x)=>{
-                            return <option>{x.value}</option>
-                        })}
-                    </Form.Select>
+                    <Form.Control type='date' id='dia'/>
                     <Form.Label className="my-1">Horario</Form.Label> 
                     <Form.Select id='hora'>
                         <option>10:00</option>
@@ -118,42 +99,47 @@ const Turnos = ( ) => {
                         <option>19:00</option>
                         <option>20:00</option>
                     </Form.Select>
-                    <Button className="my-2" variant='secondary' onClick={solicitar}>
-                        Enviar
+                    <Button className="my-3 btn-mod"  onClick={solicitar}>
+                        Solicitar turno
                     </Button>
                 </Modal.Body>
             </Modal>
 
             {/*Modal para cancelar turno*/}
-            <Modal style={{color:'white'}} show={show2} onHide={handleClose2}>
-                <Modal.Header closeButton>
-                <Modal.Title>Cancelar turno</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+            <Modal style={{marginTop:'4rem'}} show={show2} onHide={handleClose2}>
+                <Modal.Body  className="modalContent"> 
+                    <Modal.Title>CANCELAR TURNO</Modal.Title>
                     <Form.Label className="my-1">Nombre y apellido</Form.Label> 
                     <Form.Control type="text" id='nombre2' onChange={a} />
                     <Form.Label className="my-1">Seleccioná el día</Form.Label> 
-                    <Form.Select id='dia2'>
-                        {opcionesDia.map((x)=>{
-                            return <option>{x.value}</option>
-                        })}
-                    </Form.Select>
+                    <Form.Control type='date' id='dia2'/>
                     <Form.Label className="my-1">Horario</Form.Label> 
                     <Form.Select id='hora2'>
-                        <option>10:00</option>
-                        <option>11:00</option>
-                        <option>12:00</option>
-                        <option>13:00</option>
-                        <option>14:00</option>
-                        <option>15:00</option>
-                        <option>16:00</option>
-                        <option>17:00</option>
-                        <option>18:00</option>
-                        <option>19:00</option>
-                        <option>20:00</option>
+                        <option >10:00</option>
+                        <option >11:00</option>
+                        <option >12:00</option>
+                        <option >13:00</option>
+                        <option >14:00</option>
+                        <option >15:00</option>
+                        <option >16:00</option>
+                        <option >17:00</option>
+                        <option >18:00</option>
+                        <option >19:00</option>
+                        <option >20:00</option>
                     </Form.Select>
-                    <Button className="my-2" variant='secondary' onClick={cancelar}>
+                    <Button className="my-3  btn-mod" variant='secondary' onClick={cancelar}>
                         Cancelar turno
+                    </Button>
+                </Modal.Body>
+            </Modal>
+
+             {/*Modal precios*/}
+             <Modal style={{marginTop:'4rem'}} show={show3} onHide={handleClose3}>
+                <Modal.Body  className="modalContent"> 
+                    <Modal.Title>LISTA DE PRECIOS</Modal.Title>
+                    <p style={{fontSize:'22px'}}></p>
+                    <Button className="my-3  btn-mod" variant='secondary' onClick={handleClose3}>
+                        Cerrar
                     </Button>
                 </Modal.Body>
             </Modal>

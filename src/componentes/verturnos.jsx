@@ -1,8 +1,6 @@
 import Table from 'react-bootstrap/Table';
 import axios from 'axios'
 import {useState,useEffect} from 'react'
-import { Button } from 'react-bootstrap';
-import { Link, useParams } from 'react-router-dom';
 
 
 const VerTurnos = ( ) => {
@@ -12,7 +10,6 @@ const VerTurnos = ( ) => {
     const verTurnos =async () =>{
         const res = await axios.get('https://turnosserverr-production-fa13.up.railway.app/verturnos')
         setTurnos(res.data)
-        console.log(res.data)
     }
     useEffect(() => {
         verTurnos()
@@ -27,10 +24,10 @@ const VerTurnos = ( ) => {
     let dia = semana[hoy.getDay()]
     let año = hoy.getFullYear()
     numero<10?numero='0'+numero:numero=numero
-    let fecha = (numero+'-'+mes+'-'+año).toString()
+    let fecha = (año+'-'+mes+'-'+numero).toString()
 
     let turnosDelDia = []
-    turnos.map((x)=>x.dia===fecha?turnosDelDia.push({nombre:x.nombre,horario:parseInt(x.hora),fecha:x.dia}):console.log(''))
+    turnos.map((x)=>x.dia===fecha?turnosDelDia.push({id:x.id,nombre:x.nombre,horario:parseInt(x.hora),fecha:x.dia}):'')
 
     turnosDelDia.sort((a,b)=>{
         if(a.horario<b.horario){
@@ -42,18 +39,16 @@ const VerTurnos = ( ) => {
         }
     })
     
-    turnosDelDia.map((x)=>x.fecha!==fecha?turnosDelDia.pop():console.log(''))
+    turnosDelDia.map((x)=>x.fecha!==fecha?turnosDelDia.pop():'')
+
+    console.log(turnosDelDia)
     
     return(
         <div>
-            <Link to={`/admin`}>
-            <Button variant='secondary'>Volver</Button>            
-            </Link>
-
-            <p style={{color:'white',paddingLeft:'10px'}}>
+            <p style={{color:'white',paddingLeft:'10px',fontSize:'25px'}}>
                 {dia+' '+numero+'/'+mes+'/'+año}
             </p>
-            <Table striped bordered hover variant="dark">
+            <Table bordered hover className='tabla'>
                 <thead>
                     <tr>
                     <th>Horario</th>
