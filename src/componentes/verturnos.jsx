@@ -11,10 +11,10 @@ const VerTurnos = ( ) => {
         const res = await axios.get('https://turnosserverr-production-fa13.up.railway.app/verturnos')
         setTurnos(res.data)
     }
+    
     useEffect(() => {
         verTurnos()
     }, []);
-    
 
     let hoy = new Date()
     let numero = hoy.getDate()
@@ -41,8 +41,6 @@ const VerTurnos = ( ) => {
     
     turnosDelDia.map((x)=>x.fecha!==fecha?turnosDelDia.pop():'')
 
-    console.log(turnosDelDia)
-    
     return(
         <div>
             <p style={{color:'white',paddingLeft:'10px',fontSize:'25px'}}>

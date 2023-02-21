@@ -77,3 +77,23 @@ option{
     align-items: center;
     margin-right: 20px;
 }
+
+.divServiciosYPrecios{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#alias{
+    cursor: pointer;
+}
+
+.btnCopiar{
+    background-color: transparent;
+    border: none;
+}
+
+#aliasCopiado{
+    display: none;
+}
+

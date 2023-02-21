@@ -4,11 +4,28 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
+import { AiFillCopy } from "react-icons/ai";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 
 const Turnos = ( ) => {
 
+    const [precios, setPrecios] = useState([])
+
+    const verPrecios =async () =>{
+        const res = await axios.get('https://turnosserverr-production-fa13.up.railway.app/verprecios')
+        setPrecios(res.data)
+    }
+    useEffect(() => {
+        verPrecios()
+    }, []);
+
     const navigate = useNavigate()
+
+    //Modal Alias
+    const [show4, setShow4] = useState(false);
+    const handleClose4 = () => setShow4(false);
+    const modalAlias = () => setShow4(true);
 
     //Modal precios
     const [show3, setShow3] = useState(false);
@@ -53,6 +70,23 @@ const Turnos = ( ) => {
     document.getElementById('hora2').setAttribute('disabled', true)
     }
 
+    const [copiado, setCopiado] = useState(false)
+
+    const textoCopiado = () => {
+        setCopiado(true)
+        document.getElementById('aliasCopiado').classList.add('d-block')
+    }
+
+    const textoNoCopiado = () => {
+        setCopiado(false)
+        document.getElementById('aliasCopiado').classList.add('d-none')
+    }
+
+    const cerrarModalAlias = ( ) => {
+        textoNoCopiado()
+        handleClose4()
+    }
+
     return(
         <div className="inicio">
             <Button  onClick={modalPrecios} className="my-1 btn-inicio btns">
@@ -70,7 +104,11 @@ const Turnos = ( ) => {
                 <span>Cancelar turno</span> 
             </Button>
             <br />
-            
+            <Button  onClick={modalAlias} className="my-1 btn-inicio btns">
+                <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
+                <span>Alias MercadoPago</span> 
+            </Button>
+            <br />
             <Button onClick={()=>navigate('/ingresar')} className="my-1 btn-inicio btns">
                 <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
                 <span>Administrador</span> 
@@ -137,10 +175,33 @@ const Turnos = ( ) => {
              <Modal style={{marginTop:'4rem'}} show={show3} onHide={handleClose3}>
                 <Modal.Body  className="modalContent"> 
                     <Modal.Title>LISTA DE PRECIOS</Modal.Title>
-                    <p style={{fontSize:'22px'}}></p>
+                    {
+                        precios.map((e)=>{
+                            return <div className="divServiciosYPrecios">
+                                <p>{e.servicio}</p>
+                                <p>${e.precio}</p>
+                            </div>
+                        })
+                    }
                     <Button className="my-3  btn-mod" variant='secondary' onClick={handleClose3}>
                         Cerrar
                     </Button>
+                </Modal.Body>
+            </Modal>
+
+            {/*Modal alias*/}
+            <Modal style={{marginTop:'4rem'}} show={show4} onHide={handleClose4}>
+                <Modal.Body  className="modalContent"> 
+                    <Modal.Title>Alias</Modal.Title>
+                        
+                        <CopyToClipboard text="maquina.cepillo">
+                            <p onClick={textoCopiado} id="alias">maquina.cepillo <AiFillCopy className="mx-2" /></p>
+                        </CopyToClipboard>
+                        <p id="aliasCopiado">¡Alias copiado!</p>
+                        
+                        <Button className="my-3  btn-mod" variant='secondary' onClick={cerrarModalAlias}>
+                            Cerrar
+                        </Button>
                 </Modal.Body>
             </Modal>
         </div>
