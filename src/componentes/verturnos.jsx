@@ -39,7 +39,11 @@ const VerTurnos = ( ) => {
         }
     })
     
-    turnosDelDia.map((x)=>x.fecha!==fecha?turnosDelDia.pop():'')
+    let hora = hoy.getHours()
+    if(hora==11){
+        turnosDelDia.map((id)=>axios.delete(`https://turnosserverr-production-fa13.up.railway.app/elimiarturnosviejos/${id.id}`))
+    }
+
 
     return(
         <div>

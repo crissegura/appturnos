@@ -36,6 +36,10 @@ span{
     padding: 10px;
 }
 
+.btn-inicio:hover{
+    background-color: rgba(0, 0, 0, 0.788);
+}
+
 .btn-mod{
     background-color: transparent;
     border: solid 1px rgba(255, 255, 255, 0.322);
