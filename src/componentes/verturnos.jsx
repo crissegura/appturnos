@@ -64,11 +64,13 @@ const VerTurnos = ( ) => {
         window.location.reload()
     }
     
-    setInterval(actualizarPagina,60000)
+    setInterval(actualizarPagina,30000)
 
     const limpiandoTabla = ( ) => {
         turnosDelDia.map((turno)=>borrarTurno(turno.id))
-        window.location.reload()
+        setInterval(() => {
+            actualizarPagina()
+        }, 2500);
     }
 
 
