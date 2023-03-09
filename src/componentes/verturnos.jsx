@@ -49,7 +49,7 @@ const VerTurnos = ( ) => {
         }
     })
     
-    let hora = hoy.getHours()
+    // let hora = hoy.getHours()
 
     const borrarTurno = async (id) => {
         try {
@@ -66,7 +66,10 @@ const VerTurnos = ( ) => {
     
     setInterval(actualizarPagina,60000)
 
-    
+    const limpiandoTabla = ( ) => {
+        turnosDelDia.map((turno)=>borrarTurno(turno.id))
+        window.location.reload()
+    }
 
 
     return(
@@ -77,6 +80,9 @@ const VerTurnos = ( ) => {
             <p style={{color:'white',paddingLeft:'10px',fontSize:'25px'}}>
                 {dia+' '+numero+'/'+mes+'/'+año}
             </p>
+            <Button className='m-2 btn-admin' onClick={limpiandoTabla}>
+                Borrar turnos del día
+            </Button>
             <Table bordered hover className='tabla'>
                 <thead>
                     <tr>
