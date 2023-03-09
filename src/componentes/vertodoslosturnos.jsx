@@ -1,4 +1,5 @@
-import axios from "axios";
+import { collection, getDocs } from 'firebase/firestore';
+import db from '../services/firebase';
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -11,9 +12,15 @@ const VerTodosLosTurnos = ( ) => {
 
     const [turnos,setTurnos] = useState([])
 
-    const getTurnosRegistrados = async ( ) => {
-        const res = await axios.get('http://localhost:3001/verturnos')
-        setTurnos(res.data)
+    const getTurnosRegistrados=async()=>{
+        try{
+            const document = collection(db,"turnos")
+            const col = await getDocs(document)
+            const result = col.docs.map((doc)=> doc={id:doc.id,...doc.data()})
+            setTurnos(result)
+        }catch(error){
+            console.log(error)
+        }
     }
 
     useEffect(()=>{
@@ -63,7 +70,7 @@ const VerTodosLosTurnos = ( ) => {
                     }
                 </div>
                 :
-                <div>
+                <div style={{textAlign:'center',marginTop:'2rem'}}>
                     cargando...
                 </div>
             }

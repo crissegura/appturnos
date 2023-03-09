@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { AiFillEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-
+import { collection, getDocs} from 'firebase/firestore';
+import db from '../services/firebase';
 
 const ActualizarPrecios = ( ) => {
 
@@ -11,9 +11,15 @@ const ActualizarPrecios = ( ) => {
 
     const [servicio, setServicio] = useState([])
 
-    const getServicio = async ( ) => {
-        const res = await axios.get('http://localhost:3001/verprecios')
-        setServicio(res.data)
+    const getServicio=async()=>{
+        try{
+            const document = collection(db,"precios")
+            const col = await getDocs(document)
+            const result = col.docs.map((doc)=> doc={id:doc.id,...doc.data()})
+            setServicio(result)
+        }catch(error){
+            console.log(error)
+        }
     }
 
     useEffect(()=>{
@@ -23,6 +29,7 @@ const ActualizarPrecios = ( ) => {
     const irAActulizar = (id ) => {
         navigation(`/actualizar/${id}`)
     }
+
 
     return(
         <div style={{padding:'1rem'}}>

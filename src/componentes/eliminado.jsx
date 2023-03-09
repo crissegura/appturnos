@@ -6,7 +6,7 @@ import Toast from 'react-bootstrap/Toast';
 import { useParams } from 'react-router-dom';
 
 
-const Confirmado = ( ) => {
+const Eliminado = ( ) => {
 
     const {cliente} = useParams()
     const {dia} = useParams()
@@ -34,7 +34,7 @@ const Confirmado = ( ) => {
                         <strong className="me-auto" style={{color:'black'}}>NAVAJA LEGENDARY</strong>
                     </Toast.Header>
                     <Toast.Body style={{color:'black'}}>
-                        ¡Turno agendado correctamente!
+                        ¡Turno eliminado correctamente!
                         <br />
                         Nombre: {cliente}
                         <br />
@@ -57,4 +57,4 @@ const Confirmado = ( ) => {
 
 }
 
-export default Confirmado
+export default Eliminado;

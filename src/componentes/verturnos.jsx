@@ -1,8 +1,9 @@
 import Table from 'react-bootstrap/Table';
-import axios from 'axios'
 import {useState,useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { collection, getDocs,doc,deleteDoc } from 'firebase/firestore';
+import db from '../services/firebase';
 
 const VerTurnos = ( ) => {
 
@@ -10,9 +11,15 @@ const VerTurnos = ( ) => {
 
     const [turnos, setTurnos] = useState([])
 
-    const verTurnos =async () =>{
-        const res = await axios.get('http://localhost:3001/verturnos')
-        setTurnos(res.data)
+    const verTurnos=async()=>{
+        try{
+            const document = collection(db,"turnos")
+            const col = await getDocs(document)
+            const result = col.docs.map((doc)=> doc={id:doc.id,...doc.data()})
+            setTurnos(result)
+        }catch(error){
+            console.log(error)
+        }
     }
     
     useEffect(() => {
@@ -43,14 +50,24 @@ const VerTurnos = ( ) => {
     })
     
     let hora = hoy.getHours()
+
+    const borrarTurno = async (id) => {
+        try {
+            const reference = doc(db, 'turnos', id)
+            await deleteDoc(reference)
+        } catch (e) {
+            console.error("ERROR: ", e);
+        }
+    }
+
     const borrarTurnosPasados = ( ) =>{
-        if(hora===23){
-            turnosDelDia.map((id)=>axios.delete(`http://localhost:3001/elimiarturnosviejos/${id.id}`))
+        if(hora===13){
+            turnosDelDia.map((id)=>borrarTurno(id.id))
         }
         window.location.reload()
     }
     
-    setInterval(borrarTurnosPasados,10000)
+    setInterval(borrarTurnosPasados,1800000)
 
 
     return(

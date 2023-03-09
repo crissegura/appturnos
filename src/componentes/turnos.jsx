@@ -2,10 +2,12 @@ import {Button} from "react-bootstrap";
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 import { AiFillCopy } from "react-icons/ai";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { collection, getDocs, addDoc, deleteDoc, doc} from 'firebase/firestore';
+import db from '../services/firebase';
+import axios from 'axios';
 
 const Turnos = ( ) => {
 
@@ -13,10 +15,17 @@ const Turnos = ( ) => {
 
     const [precios, setPrecios] = useState([])
 
-    const verPrecios =async () =>{
-        const res = await axios.get('http://localhost:3001/verprecios')
-        setPrecios(res.data)
+    const verPrecios=async()=>{
+        try{
+            const document = collection(db,"precios")
+            const col = await getDocs(document)
+            const result = col.docs.map((doc)=> doc={id:doc.id,...doc.data()})
+            setPrecios(result)
+        }catch(error){
+            console.log(error)
+        }
     }
+
     useEffect(() => {
         verPrecios()
     }, []);
@@ -38,29 +47,65 @@ const Turnos = ( ) => {
     const handleClose = () => setShow(false);
     const modalTurno = () => setShow(true);
     const [turnos, setTurnos] = useState([])
-    const getTurnos = async () => {
-        const res = await axios.get('http://localhost:3001/verturnos')
-        setTurnos(res.data)
+    const getTurnos=async()=>{
+        try{
+            const document = collection(db,"turnos")
+            const col = await getDocs(document)
+            const result = col.docs.map((doc)=> doc={id:doc.id,...doc.data()})
+            setTurnos(result)
+        }catch(error){
+            console.log(error)
+        }
     }
     useEffect(() => {
         getTurnos()
     }, []);
 
+    const addTurno = async () => {
+        try {
+            const docRef = await addDoc(collection(db, "turnos"), {
+              nombre: document.getElementById('nombre').value.toLowerCase(),
+              dia: document.getElementById('dia').value,
+              hora : document.getElementById('hora').value  
+            }).then(navigation(`/confirmado/${document.getElementById('nombre').value.toLowerCase()}/${document.getElementById('dia').value}/${document.getElementById('hora').value}
+            `))
+          } catch (e) {
+            console.error("ERROR: ", e);
+          }
+    }
+
     const solicitar = ( e ) =>{
         e.preventDefault()
         let turno = turnos.find((t)=>t.dia===document.getElementById('dia').value&&t.hora===document.getElementById('hora').value)
         //Verificación de que este dispoible el turno y envio de ser así.
-        document.getElementById('hora').value!==''&&document.getElementById('dia').value!==''&&document.getElementById('nombre').value!==''?turno?alert('Turno no disponible.'):axios.post('http://localhost:3001/nuevoturno',{nombre : document.getElementById('nombre').value.toLowerCase(),dia : document.getElementById('dia').value,hora : document.getElementById('hora').value}).then(navigation(`/confirmado/${document.getElementById('nombre').value.toLowerCase()}/${document.getElementById('dia').value}/${document.getElementById('hora').value}
-        `)):alert('Por favor llena todos los campos.')   
+        document.getElementById('hora').value!==''&&document.getElementById('dia').value!==''&&document.getElementById('nombre').value!==''?
+        turno?
+        alert('Turno no disponible.')
+        :addTurno()
+        :alert('Por favor llena todos los campos.')   
     }
     //Cancelar un turno
     const [show2, setShow2] = useState(false);
     const handleClose2 = () => setShow2(false);
     const cancelarTurno = () => setShow2(true);
+
+    const borrarTurno = async (id) => {
+        try {
+            const reference = doc(db, 'turnos', id)
+            await deleteDoc(reference).then(navigation(`/eliminado/${document.getElementById('nombre2').value.toLowerCase()}/${document.getElementById('dia2').value}/${document.getElementById('hora2').value}
+            `))
+        } catch (e) {
+            console.error("ERROR: ", e);
+        }
+    }
+
+
     const cancelar = ( e ) => {
         e.preventDefault()
         let cancelar = turnos.find((t)=>t.dia===document.getElementById('dia2').value&&t.hora===document.getElementById('hora2').value&&t.nombre.toLowerCase()===document.getElementById('nombre2').value.toLowerCase())
-        cancelar?axios.delete(`http://localhost:3001/cancelarturno/${document.getElementById('nombre2').value.toLowerCase()}`).then(toggleShowToast2()).then(handleClose2()):alert('NO HABIA NINGUN TURNO')
+        cancelar?
+        borrarTurno(cancelar.id)
+        :alert('NO HABIA NINGUN TURNO')
 
     }
 

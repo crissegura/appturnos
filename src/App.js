@@ -9,6 +9,7 @@ import ActualizarPrecios from './componentes/actualizarprecios';
 import Actualizando from './componentes/actualizando';
 import VerTodosLosTurnos from './componentes/vertodoslosturnos';
 import Confirmado from './componentes/confirmado';
+import Eliminado from './componentes/eliminado';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path='/actualizar/:id' element={<Actualizando />} />
         <Route path='/vertodoslosturnosregistrados' element={<VerTodosLosTurnos />} />
         <Route path='/confirmado/:cliente/:dia/:hora' element={<Confirmado />} />
+        <Route path='/eliminado/:cliente/:dia/:hora' element={<Eliminado />} />
 
       </Routes>
       </BrowserRouter>
