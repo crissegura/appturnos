@@ -1,14 +1,17 @@
 import Table from 'react-bootstrap/Table';
 import axios from 'axios'
 import {useState,useEffect} from 'react'
-
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 const VerTurnos = ( ) => {
+
+    const navigation = useNavigate()
 
     const [turnos, setTurnos] = useState([])
 
     const verTurnos =async () =>{
-        const res = await axios.get('https://turnosserverr-production-fa13.up.railway.app/verturnos')
+        const res = await axios.get('http://localhost:3001/verturnos')
         setTurnos(res.data)
     }
     
@@ -40,13 +43,21 @@ const VerTurnos = ( ) => {
     })
     
     let hora = hoy.getHours()
-    if(hora==11){
-        turnosDelDia.map((id)=>axios.delete(`https://turnosserverr-production-fa13.up.railway.app/elimiarturnosviejos/${id.id}`))
+    const borrarTurnosPasados = ( ) =>{
+        if(hora===23){
+            turnosDelDia.map((id)=>axios.delete(`http://localhost:3001/elimiarturnosviejos/${id.id}`))
+        }
+        window.location.reload()
     }
+    
+    setInterval(borrarTurnosPasados,10000)
 
 
     return(
         <div>
+            <Button className="volver" onClick={()=>navigation('/admin=juanchobarber')}>
+            ❰❰ 
+            </Button>
             <p style={{color:'white',paddingLeft:'10px',fontSize:'25px'}}>
                 {dia+' '+numero+'/'+mes+'/'+año}
             </p>

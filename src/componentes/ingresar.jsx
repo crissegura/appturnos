@@ -16,7 +16,7 @@ const Ingresar = ( ) => {
         let usuario = 'admin'
         let contraseña = 1234
         
-        usuario === 'admin' && contraseña === 1234 ? location(`/admin`):console.log('DISTINTO');
+        usuario === 'admin' && contraseña === 1234 ? location(`/admin=juanchobarber`):console.log('DISTINTO');
         
     }
 

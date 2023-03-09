@@ -7,13 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { AiFillCopy } from "react-icons/ai";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-
 const Turnos = ( ) => {
+
+    const navigation = useNavigate()
 
     const [precios, setPrecios] = useState([])
 
     const verPrecios =async () =>{
-        const res = await axios.get('https://turnosserverr-production-fa13.up.railway.app/verprecios')
+        const res = await axios.get('http://localhost:3001/verprecios')
         setPrecios(res.data)
     }
     useEffect(() => {
@@ -38,7 +39,7 @@ const Turnos = ( ) => {
     const modalTurno = () => setShow(true);
     const [turnos, setTurnos] = useState([])
     const getTurnos = async () => {
-        const res = await axios.get('https://turnosserverr-production-fa13.up.railway.app/verturnos')
+        const res = await axios.get('http://localhost:3001/verturnos')
         setTurnos(res.data)
     }
     useEffect(() => {
@@ -49,7 +50,8 @@ const Turnos = ( ) => {
         e.preventDefault()
         let turno = turnos.find((t)=>t.dia===document.getElementById('dia').value&&t.hora===document.getElementById('hora').value)
         //Verificación de que este dispoible el turno y envio de ser así.
-        document.getElementById('hora').value!==''&&document.getElementById('dia').value!==''&&document.getElementById('nombre').value!==''?turno?alert('Turno no disponible.'):axios.post('https://turnosserverr-production-fa13.up.railway.app/nuevoturno',{nombre : document.getElementById('nombre').value.toLowerCase(),dia : document.getElementById('dia').value,hora : document.getElementById('hora').value}).then(alert('Turno agendado!')).then(handleClose().then(getTurnos())):alert('Por favor llena todos los campos.')      
+        document.getElementById('hora').value!==''&&document.getElementById('dia').value!==''&&document.getElementById('nombre').value!==''?turno?alert('Turno no disponible.'):axios.post('http://localhost:3001/nuevoturno',{nombre : document.getElementById('nombre').value.toLowerCase(),dia : document.getElementById('dia').value,hora : document.getElementById('hora').value}).then(navigation(`/confirmado/${document.getElementById('nombre').value.toLowerCase()}/${document.getElementById('dia').value}/${document.getElementById('hora').value}
+        `)):alert('Por favor llena todos los campos.')   
     }
     //Cancelar un turno
     const [show2, setShow2] = useState(false);
@@ -58,7 +60,8 @@ const Turnos = ( ) => {
     const cancelar = ( e ) => {
         e.preventDefault()
         let cancelar = turnos.find((t)=>t.dia===document.getElementById('dia2').value&&t.hora===document.getElementById('hora2').value&&t.nombre.toLowerCase()===document.getElementById('nombre2').value.toLowerCase())
-        cancelar?axios.delete(`https://turnosserverr-production-fa13.up.railway.app/cancelarturno/${document.getElementById('nombre2').value.toLowerCase()}`).then(alert('Turno cancelado!')).then(handleClose2().then(getTurnos)):alert('NO HABIA NINGUN TURNO')
+        cancelar?axios.delete(`http://localhost:3001/cancelarturno/${document.getElementById('nombre2').value.toLowerCase()}`).then(toggleShowToast2()).then(handleClose2()):alert('NO HABIA NINGUN TURNO')
+
     }
 
     //Si ya tiene turno y quiere cancelar autorellenar
@@ -87,6 +90,11 @@ const Turnos = ( ) => {
         handleClose4()
     }
 
+
+    const [showToast2, setShowToast2] = useState(false)
+    const toggleShowToast2 = () => setShowToast2(!showToast2)
+    
+
     return(
         <div className="inicio">
             <Button  onClick={modalPrecios} className="my-1 btn-inicio btns">
@@ -109,10 +117,6 @@ const Turnos = ( ) => {
                 <span>Alias MercadoPago</span> 
             </Button>
             <br />
-            <Button onClick={()=>navigate('/ingresar')} className="my-1 btn-inicio btns">
-                <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
-                <span>Administrador</span> 
-            </Button>
             
             {/*Modal para sacar turno*/}
             <Modal style={{marginTop:'4rem'}} show={show} onHide={handleClose}>
@@ -137,6 +141,7 @@ const Turnos = ( ) => {
                         <option>19:00</option>
                         <option>20:00</option>
                     </Form.Select>
+                    <Form.Label className="my-1">Servicio/os</Form.Label> 
                     <Button className="my-3 btn-mod"  onClick={solicitar}>
                         Solicitar turno
                     </Button>
@@ -204,6 +209,25 @@ const Turnos = ( ) => {
                         </Button>
                 </Modal.Body>
             </Modal>
+
+            {/* <Row>
+                <Col md={6} className="mb-2">
+                    <Toast show={showToast2} onClose={toggleShowToast2}>
+                    <Toast.Header>
+                        <img
+                            src="https://cdn-icons-png.flaticon.com/512/595/595777.png"
+                            width={'20px'}
+                            className="rounded me-2"
+                            alt=""
+                        />
+                        <strong className="me-auto" style={{color:'black'}}>NAVAJA LEGENDARY</strong>
+                    </Toast.Header>
+                    <Toast.Body style={{color:'black'}}>
+                        ¡Turno cancelado correctamente!
+                    </Toast.Body>
+                    </Toast>
+                </Col>
+            </Row> */}
         </div>
     )
 
