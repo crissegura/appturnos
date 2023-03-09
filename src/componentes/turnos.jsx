@@ -162,10 +162,7 @@ const Turnos = ( ) => {
                 <span>Alias MercadoPago</span> 
             </Button>
             <br />
-            <Button  onClick={()=>navigation('/ingresaradmin')} className="my-1 btn-inicio btns">
-                <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
-                <span>Administrador</span> 
-            </Button>
+            
             
             
             {/*Modal para sacar turno*/}
