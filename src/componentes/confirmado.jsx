@@ -36,6 +36,8 @@ const Confirmado = ( ) => {
                     <Toast.Body style={{color:'black'}}>
                         ¡Turno agendado correctamente!
                         <br />
+                        Hacele captura así no te olvidas, o ponete un recordatorio :)
+                        <br />
                         Nombre: {cliente}
                         <br />
                         Dia: {dia}

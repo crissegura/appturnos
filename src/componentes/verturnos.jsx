@@ -60,14 +60,13 @@ const VerTurnos = ( ) => {
         }
     }
 
-    const borrarTurnosPasados = ( ) =>{
-        if(hora===13){
-            turnosDelDia.map((id)=>borrarTurno(id.id))
-        }
+    const actualizarPagina = ( ) => {
         window.location.reload()
     }
     
-    setInterval(borrarTurnosPasados,1800000)
+    setInterval(actualizarPagina,60000)
+
+    
 
 
     return(

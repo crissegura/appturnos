@@ -180,3 +180,13 @@ a,Link{
     width: 50%;
     margin-left: 25%;
 }
+
+.redesSocialesImg{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.redSocialIcon{
+    width: 4rem;
+}

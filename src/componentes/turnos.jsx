@@ -37,6 +37,11 @@ const Turnos = ( ) => {
     const handleClose4 = () => setShow4(false);
     const modalAlias = () => setShow4(true);
 
+    //Modal Redes
+    const [show5, setShow5] = useState(false);
+    const handleClose5 = () => setShow5(false);
+    const modalRedes = () => setShow5(true);
+
     //Modal precios
     const [show3, setShow3] = useState(false);
     const handleClose3 = () => setShow3(false);
@@ -135,9 +140,9 @@ const Turnos = ( ) => {
         handleClose4()
     }
 
-
-    const [showToast2, setShowToast2] = useState(false)
-    const toggleShowToast2 = () => setShowToast2(!showToast2)
+    const cerrarModalRedes = ( ) => {
+        handleClose5()
+    }
     
 
     return(
@@ -162,7 +167,10 @@ const Turnos = ( ) => {
                 <span>Alias MercadoPago</span> 
             </Button>
             <br />
-            
+            <Button onClick={modalRedes} className="my-1 btn-inicio btns">
+                <img className="imgBtn" src="https://cdn-icons-png.flaticon.com/512/595/595777.png" alt="" />
+                <span>Redes sociales</span> 
+            </Button>
             
             
             {/*Modal para sacar turno*/}
@@ -257,24 +265,21 @@ const Turnos = ( ) => {
                 </Modal.Body>
             </Modal>
 
-            {/* <Row>
-                <Col md={6} className="mb-2">
-                    <Toast show={showToast2} onClose={toggleShowToast2}>
-                    <Toast.Header>
-                        <img
-                            src="https://cdn-icons-png.flaticon.com/512/595/595777.png"
-                            width={'20px'}
-                            className="rounded me-2"
-                            alt=""
-                        />
-                        <strong className="me-auto" style={{color:'black'}}>NAVAJA LEGENDARY</strong>
-                    </Toast.Header>
-                    <Toast.Body style={{color:'black'}}>
-                        ¡Turno cancelado correctamente!
-                    </Toast.Body>
-                    </Toast>
-                </Col>
-            </Row> */}
+            <Modal style={{marginTop:'4rem'}} show={show5} onHide={handleClose5}>
+                <Modal.Body  className="modalContent"> 
+                    
+                        <div className="redesSocialesImg">
+                            <a href="https://www.instagram.com/juan_gabriel_dettore/" target='-'>
+                                <img  className="redSocialIcon" src="https://img.icons8.com/fluency/256/instagram-new.png" alt="" />
+                            </a>
+
+                            <a href="https://wa.link/gm4smf" target='-'>
+                                <img className="redSocialIcon"  src="https://img.icons8.com/office/256/whatsapp.png" alt="" />
+                            </a>
+                        </div>
+
+                </Modal.Body>
+            </Modal>
         </div>
     )
 
