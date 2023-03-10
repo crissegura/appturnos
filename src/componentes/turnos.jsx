@@ -184,6 +184,7 @@ const Turnos = ( ) => {
                     <Form.Control type='date' id='dia'/>
                     <Form.Label className="my-1">Horario</Form.Label> 
                     <Form.Select id='hora'>
+                        <option>09:00</option>
                         <option>10:00</option>
                         <option>11:00</option>
                         <option>12:00</option>
@@ -196,7 +197,6 @@ const Turnos = ( ) => {
                         <option>19:00</option>
                         <option>20:00</option>
                     </Form.Select>
-                    <Form.Label className="my-1">Servicio/os</Form.Label> 
                     <Button className="my-3 btn-mod"  onClick={solicitar}>
                         Solicitar turno
                     </Button>
@@ -213,6 +213,7 @@ const Turnos = ( ) => {
                     <Form.Control type='date' id='dia2'/>
                     <Form.Label className="my-1">Horario</Form.Label> 
                     <Form.Select id='hora2'>
+                        <option >09:00</option>
                         <option >10:00</option>
                         <option >11:00</option>
                         <option >12:00</option>
