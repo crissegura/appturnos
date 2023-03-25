@@ -66,13 +66,55 @@ const Turnos = ( ) => {
         getTurnos()
     }, []);
 
+    let clienteWP
+    let diaWP
+    let horaWP
+
+    const finalizar = ( ) => {
+    document.getElementById('nombre').value===''?
+        clienteWP = ''
+    :
+        clienteWP = document.getElementById('nombre').value
+    document.getElementById('hora').value===''?
+        horaWP = ''
+    :
+        horaWP = document.getElementById('hora').value
+    document.getElementById('dia').value===''?
+        diaWP = ''
+    :
+        diaWP = document.getElementById('dia').value
+        let whatsapp = `https://api.whatsapp.com/send?phone=541127394371&text=*Nuevo%20turno%20agendado*%0ACliente%3A%20${clienteWP}%0ADía:%20${diaWP}%0AHora:%20${horaWP}`
+        window.open(whatsapp)
+    }
+
+    let clienteWP2
+    let diaWP2
+    let horaWP2
+
+    const finalizarCancelado = ( ) => {
+        document.getElementById('nombre2').value===''?
+            clienteWP2 = ''
+        :
+            clienteWP2 = document.getElementById('nombre2').value
+        document.getElementById('hora2').value===''?
+            horaWP2 = ''
+        :
+            horaWP2 = document.getElementById('hora2').value
+        document.getElementById('dia2').value===''?
+            diaWP2 = ''
+        :
+            diaWP2 = document.getElementById('dia2').value
+            let whatsapp2 = `https://api.whatsapp.com/send?phone=541127394371&text=*Turno%20cancelado*%0ACliente%3A%20${clienteWP2}%0ADía:%20${diaWP2}%0AHora:%20${horaWP2}`
+            window.open(whatsapp2)
+        }
+
     const addTurno = async () => {
         try {
             const docRef = await addDoc(collection(db, "turnos"), {
               nombre: document.getElementById('nombre').value.toLowerCase(),
               dia: document.getElementById('dia').value,
               hora : document.getElementById('hora').value  
-            }).then(navigation(`/confirmado/${document.getElementById('nombre').value.toLowerCase()}/${document.getElementById('dia').value}/${document.getElementById('hora').value}
+            }).then(finalizar()).then(navigation(`/confirmado/${document.getElementById('nombre').value.toLowerCase()}/${document.getElementById('dia').value}/${document.getElementById('hora').value}
             `))
           } catch (e) {
             console.error("ERROR: ", e);
@@ -97,7 +139,7 @@ const Turnos = ( ) => {
     const borrarTurno = async (id) => {
         try {
             const reference = doc(db, 'turnos', id)
-            await deleteDoc(reference).then(navigation(`/eliminado/${document.getElementById('nombre2').value.toLowerCase()}/${document.getElementById('dia2').value}/${document.getElementById('hora2').value}
+            await deleteDoc(reference).then(finalizarCancelado()).then(navigation(`/eliminado/${document.getElementById('nombre2').value.toLowerCase()}/${document.getElementById('dia2').value}/${document.getElementById('hora2').value}
             `))
         } catch (e) {
             console.error("ERROR: ", e);
